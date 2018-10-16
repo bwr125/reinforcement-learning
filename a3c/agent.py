@@ -118,7 +118,7 @@ class Agent():
         # First convolutional layer
         with tf.variable_scope('conv1'):
             conv1 = tf.contrib.layers.convolution2d(inputs=state,
-            num_outputs=16, kernel_size=[8,8], stride=[4,4], padding="VALID",
+            num_outputs=16, kernel_size=[8,8], stride=[4,4], padding='VALID',
             activation_fn=tf.nn.relu,
             weights_initializer=tf.contrib.layers.xavier_initializer_conv2d(),
             biases_initializer=tf.zeros_initializer())
@@ -127,7 +127,7 @@ class Agent():
         # Second convolutional layer
         with tf.variable_scope('conv2'):
             conv2 = tf.contrib.layers.convolution2d(inputs=conv1, num_outputs=32,
-            kernel_size=[4,4], stride=[2,2], padding="VALID",
+            kernel_size=[4,4], stride=[2,2], padding='VALID',
             activation_fn=tf.nn.relu,
             weights_initializer=tf.contrib.layers.xavier_initializer_conv2d(),
             biases_initializer=tf.zeros_initializer())

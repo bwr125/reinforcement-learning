@@ -27,9 +27,9 @@ TESTING = False
 
 I_ASYNC_UPDATE = 5
 
-FLAGS = {"T_MAX": T_MAX, "NUM_THREADS": NUM_THREADS, "INITIAL_LEARNING_RATE":
-INITIAL_LEARNING_RATE, "DISCOUNT_FACTOR": DISCOUNT_FACTOR, "VERBOSE_EVERY":
-VERBOSE_EVERY, "TESTING": TESTING, "I_ASYNC_UPDATE": I_ASYNC_UPDATE}
+FLAGS = {'T_MAX': T_MAX, 'NUM_THREADS': NUM_THREADS, 'INITIAL_LEARNING_RATE':
+INITIAL_LEARNING_RATE, 'DISCOUNT_FACTOR': DISCOUNT_FACTOR, 'VERBOSE_EVERY':
+VERBOSE_EVERY, 'TESTING': TESTING, 'I_ASYNC_UPDATE': I_ASYNC_UPDATE}
 
 training_finished = False
 
@@ -58,7 +58,7 @@ class Summary:
 
 def async_trainer(agent, env, sess, thread_idx, T_queue, summary, saver,
     save_path):
-    print "Training thread", thread_idx
+    print('Training thread', thread_idx)
     T = T_queue.get()
     T_queue.put(T+1)
     t = 0
@@ -149,11 +149,11 @@ def async_trainer(agent, env, sess, thread_idx, T_queue, summary, saver,
                 test_batch_target_values.append(discount(temp_rewards[j:], DISCOUNT_FACTOR))
             if not test_equals(batch_target_values, test_batch_target_values,
                 1e-5):
-                print "Assertion failed"
-                print last_R
-                print batch_rewards
-                print batch_target_values
-                print test_batch_target_values
+                print('Assertion failed')
+                print(last_R)
+                print(batch_rewards)
+                print(batch_target_values)
+                print(test_batch_target_values)
 
         # Compute the estimated value of each state
         batch_advantages = np.array(batch_target_values) - np.array(baseline_values)
@@ -218,21 +218,21 @@ def evaluator(agent, env, sess, T_queue, summary, saver, save_path):
         T = T_queue.get()
         T_queue.put(T)
         if T - last_verbose >= VERBOSE_EVERY:
-            print "T", T
+            print('T', T)
             current_time = time()
-            print "Train steps per second", float(T - last_verbose) / (current_time - last_time)
+            print('Train steps per second', float(T - last_verbose) / (current_time - last_time))
             last_time = current_time
             last_verbose = T
             
-            print "Evaluating agent"
+            print('Evaluating agent')
             episode_rewards, episode_vals = estimate_reward(agent, env, episodes=5)
             avg_ep_r = np.mean(episode_rewards)
             avg_val = np.mean(episode_vals)
-            print "Avg ep reward", avg_ep_r, "Average value", avg_val
+            print('Avg ep reward', avg_ep_r, 'Average value', avg_val)
 
             summary.write_summary({'episode_avg_reward': avg_ep_r, 'avg_value': avg_val}, T)
             checkpoint_file = saver.save(sess, save_path, global_step=T)
-            print "Saved in", checkpoint_file
+            print('Saved in', checkpoint_file)
         sleep(1.0)
 
 # If restore is True, then start the model from the most recent checkpoint.
@@ -245,7 +245,7 @@ def a3c(game_name, num_threads=8, restore=None, save_path='model'):
         if game_name == 'CartPole-v0':
             env = CustomGymClassicControl(gym_env)
         else:
-            print "Assuming ATARI game and playing with pixels"
+            print('Assuming ATARI game and playing with pixels')
             env = CustomGym(gym_env, game_name, nb_frames=1)
         envs.append(env)
 
@@ -268,7 +268,7 @@ def a3c(game_name, num_threads=8, restore=None, save_path='model'):
         if restore is not None:
             saver.restore(sess, save_path + '-' + str(restore))
             last_T = restore
-            print "T was:", last_T
+            print('T was:', last_T)
             T_queue.put(last_T)
         else:
             sess.run(tf.global_variables_initializer())
@@ -311,17 +311,17 @@ def main(argv):
     save_path = None
     restore = None
     try:
-        opts, args = getopt.getopt(argv, "hg:s:r:t:")
+        opts, args = getopt.getopt(argv, 'hg:s:r:t:')
     except getopt.GetoptError:
-        print "To run the OpenAI Gym game and save to the given save path: \
-        a3c.py -g <game name> -s <save path> -t <num threads>"
-        print "To resume training playing on the given OpenAI Gym game from \
+        print('To run the OpenAI Gym game and save to the given save path: \
+        a3c.py -g <game name> -s <save path> -t <num threads>')
+        print('To resume training playing on the given OpenAI Gym game from \
         the given save path: python a3c.py -g <game name> -s <save path> -t \
-        <num threads> -r <the T in save_path-T>."
+        <num threads> -r <the T in save_path-T>.')
     for opt, arg in opts:
         if opt == '-h':
-            print "Options: -g <game name>, -s <save path>, -r (restore from \
-            the save path given), -t <num threads>."
+            print('Options: -g <game name>, -s <save path>, -r (restore from \
+            the save path given), -t <num threads>.')
             sys.exit()
         elif opt == '-g':
             game_name = arg
@@ -331,20 +331,20 @@ def main(argv):
             restore = int(arg)
         elif opt == '-t':
             num_threads = int(arg)
-            print "Using", num_threads, "threads."
+            print('Using', num_threads, 'threads.')
     if game_name is None:
-        print "No game name specified, so playing", game_name
+        print('No game name specified, so playing', game_name)
     if save_path is None:
         save_path = 'experiments/' + game_name + '/' + \
-        strftime("%d-%m-%Y-%H:%M:%S/model", gmtime())
-        print "No save path specified, so saving to", save_path
+        strftime('%d-%m-%Y-%H:%M:%S/model', gmtime())
+        print('No save path specified, so saving to', save_path)
     if not os.path.exists(save_path):
-        print "Path doesn't exist, so creating"
+        print('Path doesn't exist, so creating')
         os.makedirs(save_path)
-    print "Using save path", save_path
-    print "Using flags", FLAGS
+    print('Using save path', save_path
+    print('Using flags', FLAGS)
     a3c(game_name, num_threads=NUM_THREADS, restore=restore,
     save_path=save_path)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main(sys.argv[1:])

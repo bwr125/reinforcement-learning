@@ -82,7 +82,7 @@ def qlearning(env, input_dim, num_actions, max_episodes=100000, update_target_ev
             state = next_state
             t += 1
             if t > 1000:
-                print "Maximum episode length"
+                print('Maximum episode length')
                 break
         all_rewards.append(t)
 
@@ -109,14 +109,14 @@ def qlearning(env, input_dim, num_actions, max_episodes=100000, update_target_ev
                 tf_action: actions
             })
             if ep % 100 == 0:
-                print "Loss:", loss
-                print "Average ep length", np.mean(all_rewards)
-                print "Epsilon", epsilon
+                print('Loss:', loss)
+                print('Average ep length', np.mean(all_rewards))
+                print('Epsilon', epsilon)
                 all_rewards = []
 
             if ep % update_target_every == 0:
-                print "Updating target"
+                print('Updating target')
                 sess.run(update_ops)
 
-
-qlearning(gym.make('CartPole-v0'), 4, 2)
+if __name__ == '__main__:
+    qlearning(gym.make('CartPole-v0'), 4, 2)

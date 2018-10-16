@@ -14,7 +14,7 @@ env = gym.make('CartPole-v0')
 def policy_gradient_agent(num_episodes, theta, max_episode_length, render=True):
     for i_episode in range(num_episodes):
         episode_rewards, _, _ = run_episode(theta, max_episode_length, render)
-        print("Reward for episode:", sum(episode_rewards))
+        print('Reward for episode:', sum(episode_rewards))
 
 # Train an agent using policy gradients. Each episode, we sample a trajectory,
 # and then estimate the gradient of the expected reward with respect to theta.
@@ -132,12 +132,13 @@ def run_episode(theta, max_episode_length, render=False):
             break
     return episode_rewards, episode_actions, episode_observations
 
-# Train the agent
-num_episodes = 1000
-max_episode_length = 200
-initial_step_size = 0.1
-theta = train_policy_gradient_agent(num_episodes, max_episode_length,
-        initial_step_size)
-
-# Run the agent for 10 episodes
-policy_gradient_agent(10, theta, max_episode_length)
+if __name__ == '__main__':
+    # Train the agent
+    num_episodes = 1000
+    max_episode_length = 200
+    initial_step_size = 0.1
+    theta = train_policy_gradient_agent(num_episodes, max_episode_length,
+                                        initial_step_size)
+    
+    # Run the agent for 10 episodes
+    policy_gradient_agent(10, theta, max_episode_length)

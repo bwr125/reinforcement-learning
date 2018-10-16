@@ -183,11 +183,12 @@ def fit_gaussian_to_samples(samples):
     sigma2 = np.var(samples,0)
     return [mu, sigma2]
 
-# Train the agent using at most 10 iterations of the cross entropy method,
-# using 100 samples each time, and only keeping the top 10%.
-trained_theta = train_cross_entropy_q_agent(50, 200, 0.1)
-
-print("Trained theta: {}".format(trained_theta))
-
-# Run the agent with our computed theta
-cross_entropy_q_agent(10, 10000, trained_theta)
+if __name__ == '__main__':
+    # Train the agent using at most 10 iterations of the cross entropy method,
+    # using 100 samples each time, and only keeping the top 10%.
+    trained_theta = train_cross_entropy_q_agent(50, 200, 0.1)
+    
+    print("Trained theta: {}".format(trained_theta))
+    
+    # Run the agent with our computed theta
+    cross_entropy_q_agent(10, 10000, trained_theta)

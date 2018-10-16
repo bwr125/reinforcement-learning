@@ -23,7 +23,7 @@ def create_network():
     b = tf.Variable(tf.constant(0.01, shape=[NUM_ACTIONS]))
 
     # Take the input
-    input_layer = tf.placeholder("float", [None, NUM_INPUT])
+    input_layer = tf.placeholder('float', [None, NUM_INPUT])
 
     # Compute the matrix product
     logits = tf.matmul(input_layer, W) + b
@@ -42,8 +42,8 @@ def policy_gradient():
     # pi(a | s; theta) as our function to maximise with tensorflow.
 
     # This holds the actions we took
-    tf_actions = tf.placeholder("float", [None, NUM_ACTIONS])
-    tf_rewards = tf.placeholder("float", [None])
+    tf_actions = tf.placeholder('float', [None, NUM_ACTIONS])
+    tf_rewards = tf.placeholder('float', [None])
 
     # Isolate the log policy for the action we took
     tf_log_policy_for_action = tf.reduce_mean(tf.mul(tf_actions, tf_log_policy),
@@ -129,9 +129,9 @@ def policy_gradient():
             i_episode += 1
             running_mean = 0.9 * running_mean + 0.1 * t
             if i_episode % 100 == 0:
-                print("Reward for episode: {}".format(running_mean))
+                print('Reward for episode: {}'.format(running_mean))
             t = 0
-            #print("Reward for episode: {}".format(np.sum(nonzero_rewards)))
+            #print('Reward for episode: {}'.format(np.sum(nonzero_rewards)))
             nonzero_rewards = []
 
         # Store the observation -- this ensures rewards and observations have
@@ -169,8 +169,9 @@ def test_discount_rewards():
         2+0.5*-5,-5])
     assert((actual==expected).all())
 
-# Run tests
-test_discount_rewards()
+if __name__ == '__main__':
+    # Run tests
+    test_discount_rewards()
 
-# Train the agent
-policy_gradient()
+    # Train the agent
+    policy_gradient()

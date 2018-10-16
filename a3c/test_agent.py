@@ -16,27 +16,27 @@ def test_network():
         # Initialise all variables and then check the output of the network
         sess.run(tf.global_variables_initializer())
 
-        print agent.layers
+        print(agent.layers)
         trainable_variables = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES,
         scope='network')
-        print trainable_variables
+        print(trainable_variables)
 
         trainable_variables_values = sess.run(trainable_variables)
-        print "Trainable variables initial values"
-        print [var for var in trainable_variables_values]
+        print('Trainable variables initial values')
+        print([var for var in trainable_variables_values])
 
-        print "Shapes of trainable variables"
-        print [np.shape(var) for var in trainable_variables_values]
+        print('Shapes of trainable variables')
+        print([np.shape(var) for var in trainable_variables_values])
 
-        print "Total number of variables"
-        print np.sum([np.prod(np.shape(var)) for var in trainable_variables_values])
+        print('Total number of variables')
+        print(np.sum([np.prod(np.shape(var)) for var in trainable_variables_values]))
 
 def display_output(sess, agent, state):
     layer_outputs = {}
     for k, v in agent.layers:
         layer_outputs[k] = sess.run(v, feed_dict={agent.state: state})
 
-    print layer_outputs
+    print(layer_outputs)
 
 def test_network_output():
     # Reset the graph to make sure we get a new session.
@@ -89,5 +89,6 @@ def get_random_state(game_name, random_steps=20):
 
     return state
     
-test_network()
-test_network_output()
+if __name__ == '__main__':
+    test_network()
+    test_network_output()

@@ -24,7 +24,7 @@ def cross_entropy_agent(num_episodes, max_episode_length, theta):
             episode_reward += reward
             if done:
                 rewards.append(episode_reward)
-                print("Reward for episode: {}".format(episode_reward))
+                print('Reward for episode: {}'.format(episode_reward))
                 break
 
 # Train the cross entropy agent.
@@ -45,7 +45,7 @@ def train_cross_entropy_agent(max_iterations, num_samples, elite_fraction,
     mu = [0] * 4
     sigma2 = [initial_variance] * 4
     for iter in xrange(max_iterations):
-        print("Iteration: {}".format(iter))
+        print('Iteration: {}'.format(iter))
         sample_theta = []
         reward_estimates = []
         for j in xrange(num_samples):
@@ -59,7 +59,7 @@ def train_cross_entropy_agent(max_iterations, num_samples, elite_fraction,
         # Print the average reward
         average_reward = np.mean(reward_estimates)
         if verbose:
-            print("Average reward: {}".format(average_reward))
+            print('Average reward: {}'.format(average_reward))
 
         # If our average reward is at least the reward goal, then we are done
         if average_reward >= reward_goal:
@@ -137,9 +137,10 @@ def fit_gaussian_to_samples(samples):
     sigma2 = np.var(samples,0)
     return [mu, sigma2]
 
-# Train the agent using at most 100 iterations of the cross entropy method,
-# using 100 samples each time, and only keeping the top 10%.
-trained_theta = train_cross_entropy_agent(100, 100, 0.1)
-
-# Run the agent with our computed theta
-cross_entropy_agent(10, 10000, trained_theta)
+if __name__ == '__main__':
+    # Train the agent using at most 100 iterations of the cross entropy method,
+    # using 100 samples each time, and only keeping the top 10%.
+    trained_theta = train_cross_entropy_agent(100, 100, 0.1)
+    
+    # Run the agent with our computed theta
+    cross_entropy_agent(10, 10000, trained_theta)

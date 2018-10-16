@@ -96,8 +96,8 @@ def pong_deep_q_learn():
     tf_sess = tf.Session()
 
     # Create tensorflow network
-    q_network = NetworkDeepmind("q_network")
-    target_network = NetworkDeepmind("target_network")
+    q_network = NetworkDeepmind('q_network')
+    target_network = NetworkDeepmind('target_network')
 
     tf_sess.run(tf.global_variables_initializer())
 
@@ -141,7 +141,7 @@ def pong_deep_q_learn():
         # Copy the network parameters from the target network to the q_network
         # every UPDATE_NETWORK_EVERY timesteps.
         if (t % UPDATE_NETWORK_EVERY == 0) and t > OBSERVATION_STEPS:
-            print "Updating Q network"
+            print('Updating Q network')
             copy_network_params(tf_sess, target_network, q_network)
 
         # Compute action
@@ -165,19 +165,19 @@ def pong_deep_q_learn():
                 nonzero_rewards.popleft()
 
         if t < OBSERVATION_STEPS and t % 100 == 0:
-            print "Observing", t, "/", OBSERVATION_STEPS
+            print 'Observing', t, '/', OBSERVATION_STEPS
 
         # Compute the average q-value, and display the average reward and
         # average q-value
         if (t >= OBSERVATION_STEPS) and (t % VERBOSE_EVERY_STEPS == 0):
             avg_q_value = compute_average_q_value(tf_sess, q_network, benchmark_states)
-            print("Time: {}. Average Q-value: {}".format(t, avg_q_value))
+            print('Time: {}. Average Q-value: {}'.format(t, avg_q_value))
             avg_q_history.append(avg_q_value)
 
-            print("Average nonzero reward: {}".format(np.mean(nonzero_rewards)))
+            print('Average nonzero reward: {}'.format(np.mean(nonzero_rewards)))
             avg_reward_history.append(np.mean(nonzero_rewards))
 
-            print("Epsilon: {}".format(epsilon_greedy))
+            print('Epsilon: {}'.format(epsilon_greedy))
 
             # Plot the data, but don't show it
             plot_data = np.append(np.array(avg_q_history)[:,np.newaxis],
@@ -185,7 +185,7 @@ def pong_deep_q_learn():
 
             # Save the plot
             plt.plot(plot_data)
-            plt.savefig("rewardhistory" + identifier + ".jpg")
+            plt.savefig('rewardhistory' + identifier + '.jpg')
 
             if plot:
                 ax1.clear()
@@ -310,17 +310,17 @@ class NetworkDeepmind():
         fc2_W = tf.Variable(tf.truncated_normal([512, NUM_ACTIONS], stddev=0.1))
         fc2_b = tf.Variable(tf.constant(0.1, shape=[NUM_ACTIONS]))
 
-        self.input_layer = tf.placeholder("float", [None, RESIZED_SCREEN_X,
+        self.input_layer = tf.placeholder('float', [None, RESIZED_SCREEN_X,
             RESIZED_SCREEN_Y, STATE_FRAMES])
 
         conv1 = tf.nn.relu(tf.nn.conv2d(self.input_layer, conv1_W,
-            strides=[1,4,4,1], padding="SAME") + conv1_b) 
+            strides=[1,4,4,1], padding='SAME') + conv1_b) 
 
         conv2 = tf.nn.relu(tf.nn.conv2d(conv1, conv2_W, strides=[1,2,2,1],
-            padding="VALID") + conv2_b)
+            padding='VALID') + conv2_b)
 
         conv3 = tf.nn.relu(tf.nn.conv2d(conv2, conv3_W, strides=[1,1,1,1],
-            padding="VALID") + conv3_b)
+            padding='VALID') + conv3_b)
 
         flatten = tf.reshape(conv3, [-1, 7*7*64])
 
@@ -329,10 +329,10 @@ class NetworkDeepmind():
         self.output_layer = tf.matmul(fc1, fc2_W) + fc2_b
 
         # A one-hot vector specifying the action
-        self.action = tf.placeholder("float", [None, NUM_ACTIONS])
+        self.action = tf.placeholder('float', [None, NUM_ACTIONS])
 
         # The target for Q-learning. This is y_i in eqn 2 of the DQN paper.
-        self.target = tf.placeholder("float", [None])
+        self.target = tf.placeholder('float', [None])
 
         # The q-value for the specified action, where tf_action is a one-hot vector.
         self.q_for_action = tf.reduce_sum(self.output_layer * self.action,
@@ -357,5 +357,6 @@ class NetworkDeepmind():
             self.target: targets
         })
 
-# Run deep q learning
-pong_deep_q_learn()
+if __name__ == '__main__':
+    # Run deep q learning
+    pong_deep_q_learn()

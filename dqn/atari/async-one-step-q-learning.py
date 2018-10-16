@@ -39,7 +39,7 @@ import random
 
 random.seed(100)
 
-os.environ["KERAS_BACKEND"] = "tensorflow"
+os.environ['KERAS_BACKEND'] = 'tensorflow'
 from keras import backend as K
 from keras.layers import Convolution2D, Flatten, Dense, Input
 from keras.models import Model
@@ -148,7 +148,7 @@ def get_epsilon(global_step, epsilon_steps, epsilon_min):
     return epsilon if epsilon > epsilon_min else epsilon_min
 
 def async_trainer(agent, env, sess, thread_idx, T_queue, summary):
-    print "Training thread", thread_idx
+    print('Training thread', thread_idx)
     # Choose a minimum epsilon once and for all for this agent.
     Tq = T_queue.get()
     T_queue.put(Tq+1)
@@ -198,17 +198,17 @@ def async_trainer(agent, env, sess, thread_idx, T_queue, summary):
 
         if thread_idx == 0:
             if Tq - last_target_update >= I_TARGET:
-                print "Worker", thread_idx, "T", Tq, "Updating target"
+                print('Worker', thread_idx, 'T', Tq, 'Updating target')
                 last_target_update = Tq
                 agent.update_target()
 
             if Tq - last_verbose >= VERBOSE_EVERY and terminal:
-                print "Worker", thread_idx, "T", Tq, "Evaluating agent"
+                print('Worker', thread_idx, 'T', Tq, 'Evaluating agent')
                 last_verbose = Tq
                 episode_rewards, episode_qs = estimate_reward(agent, env, episodes=5)
                 avg_ep_r = np.mean(episode_rewards)
                 avg_q = np.mean(episode_qs)
-                print "Avg ep reward", avg_ep_r, "epsilon", epsilon, "Average q", avg_q
+                print('Avg ep reward', avg_ep_r, 'epsilon', epsilon, 'Average q', avg_q)
                 summary.write_summary({'episode_avg_reward': avg_ep_r, 'avg_q_value': avg_q}, Tq)
     global training_finished
     training_finished = True
@@ -259,4 +259,5 @@ def qlearn(game_name, nb_threads=8):
         for p in processes:
             p.join()
 
-qlearn('SpaceInvaders-v0')
+if __name__ == '__main__':
+    qlearn('SpaceInvaders-v0')

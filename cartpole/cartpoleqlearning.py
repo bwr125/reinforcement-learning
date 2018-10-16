@@ -113,12 +113,12 @@ def train_q_learning_agent(max_iterations, sample_size, initial_step_size=1e-2,
         theta = theta - dloss_dtheta * step_size
 
         if t % 10 == 0:
-            print("Average loss: {}".format(np.mean(losses)))
-            print("Average reward: {}".format(avg_reward))
-            print("Epsilon: {}".format(epsilon))
-            print("Step size: {}".format(step_size))
+            print('Average loss: {}'.format(np.mean(losses)))
+            print('Average reward: {}'.format(avg_reward))
+            print('Epsilon: {}'.format(epsilon))
+            print('Step size: {}'.format(step_size))
             estimated_reward = estimate_reward_with_theta(theta, 100, 1000)
-            print("Estimated reward: {}".format(estimated_reward))
+            print('Estimated reward: {}'.format(estimated_reward))
             
     return theta
 
@@ -146,9 +146,10 @@ def estimate_reward_with_theta(theta, num_iters, max_episode_length,
     # Return the average reward
     return np.mean(rewards)
 
-# Train using q-learning
-theta = train_q_learning_agent(10000, 5000)
+if __name__ == '__main__':
+    # Train using q-learning
+    theta = train_q_learning_agent(10000, 5000)
 
-# Estimate the reward
-estimated_reward = estimate_reward_with_theta(theta, 100, 10000, True)
-print("Estimated reward: {}".format(estimated_reward))
+    # Estimate the reward
+    estimated_reward = estimate_reward_with_theta(theta, 100, 10000, True)
+    print('Estimated reward: {}'.format(estimated_reward))

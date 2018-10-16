@@ -37,7 +37,7 @@ def play(agent, game_name, render=True, num_episodes=10, fps=5.0, monitor=True):
     episode_vals = []
     t = 0
     for ep in xrange(num_episodes):
-        print "Starting episode", ep
+        print('Starting episode', ep)
         episode_reward = 0
         state = env.reset()
         terminal = False
@@ -67,9 +67,9 @@ def main(argv):
     T = None
     game_name = None
     try:
-        opts, args = getopt.getopt(argv, "g:s:T:")
+        opts, args = getopt.getopt(argv, 'g:s:T:')
     except getopt.GetoptError:
-        print "Usage: python run_agent.py -g <game name> -s <save path> -T <T>"
+        print('Usage: python run_agent.py -g <game name> -s <save path> -T <T>')
     for opt, arg in opts:
         if opt == '-g':
             game_name = arg
@@ -78,17 +78,17 @@ def main(argv):
         elif opt == '-T':
             T = arg
     if game_name is None:
-        print "No game name specified"
+        print('No game name specified')
         sys.exit()
     if save_path is None:
-        print "No save path specified"
+        print('No save path specified')
         sys.exit()
     if T is None:
-        print "No T specified"
+        print('No T specified')
         sys.exit()
-    print "Reading from", save_path
-    print "Running agent"
+    print('Reading from', save_path)
+    print('Running agent')
     run_agent(save_path, T, game_name)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main(sys.argv[1:])

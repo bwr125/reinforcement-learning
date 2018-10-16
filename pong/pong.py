@@ -20,7 +20,7 @@ MOVE_DOWN = 3
 def policy_gradient_agent(num_episodes, W1, W2, max_episode_length, render=True):
     for i_episode in range(num_episodes):
         episode_rewards, _, _, _ = run_episode(W1, W2, max_episode_length, render)
-        print("Reward for episode:", sum(episode_rewards))
+        print('Reward for episode:', sum(episode_rewards))
 
 # Train an agent using policy gradients. Each episode, we sample a trajectory,
 # and then estimate the gradient of the expected reward with respect to theta.
@@ -74,14 +74,14 @@ def train_policy_gradient_agent(num_episodes, max_episode_length,
             rewards = np.array(episode_rewards)
             won = len(rewards[rewards == 1])
             lost = len(rewards[rewards == -1])
-            print("Episode {}.{}   AI: {} - {} : RL".format(i_episode, i_batch,
+            print('Episode {}.{}   AI: {} - {} : RL'.format(i_episode, i_batch,
                 lost, won))
             batch_results += [[lost, won]]
 
-        print("Average episode length: {}".format(float(batch_length) /
+        print('Average episode length: {}'.format(float(batch_length) /
             batch_size))
         mean_batch_results = np.mean(batch_results, 0)
-        print("Average episode score: {}".format(mean_batch_results))
+        print('Average episode score: {}'.format(mean_batch_results))
 
         win_history.append(mean_batch_results)
         if (i_episode % 10) == 0:
@@ -92,7 +92,7 @@ def train_policy_gradient_agent(num_episodes, max_episode_length,
         # Write W1, W2 to file every 10th batch
         if (i_episode % 10) == 0:
             name = 'weights/W1W2-' + str(i_episode) + '.pkl'
-            print("Writing W1, W2 to " + name)
+            print('Writing W1, W2 to ' + name)
             f = open(name, 'wb')
             pickle.dump([W1, W2], f)
             f.close()
@@ -118,7 +118,7 @@ def train_policy_gradient_agent(num_episodes, max_episode_length,
             plt.pause(0.0001)
 
         # Compute the policy gradient for this trajectory
-        print("Computing gradients")
+        print('Computing gradients')
         policy_gradient = compute_policy_gradient(batch_rewards,
                 batch_actions, batch_states, W1, W2)
 
@@ -248,7 +248,7 @@ def compute_policy_gradient(episode_rewards, episode_actions,
             end_points)
 
     for t in xrange(episode_length):
-        sys.stdout.write("Progress: %d%%   \r" % int(100*float(t+1) / \
+        sys.stdout.write('Progress: %d%%   \r' % int(100*float(t+1) / \
                 float(episode_length)) )
         sys.stdout.flush()
         state = episode_states[t]
@@ -442,17 +442,18 @@ def relative_error(arr1, arr2, eps):
     norm2 = np.sum(np.abs(np.reshape(arr2, (1,-1))))
     return abs_error / min(1e-20 + norm1, 1e-20 + norm2)
 
-# Test the gradients numerically
-print("Testing gradients")
-[max_relative_error_W1, max_relative_error_W2] = test_gradient(1e-6)
-print("Max rel error W1 {}".format(max_relative_error_W1))
-print("Max rel error W2 {}".format(max_relative_error_W2))
+if __name__ == '__main__':
+    # Test the gradients numerically
+    print('Testing gradients')
+    [max_relative_error_W1, max_relative_error_W2] = test_gradient(1e-6)
+    print('Max rel error W1 {}'.format(max_relative_error_W1))
+    print('Max rel error W2 {}'.format(max_relative_error_W2))
 
-# Train the agent
-num_episodes = 100000
-max_episode_length = 2000
-W1, W2 = train_policy_gradient_agent(num_episodes, max_episode_length,
-        batch_size=2, num_hidden=5, render=False)
-
-# Run the agent for 10 episodes
-policy_gradient_agent(10, W1, W2, max_episode_length)
+    # Train the agent
+    num_episodes = 100000
+    max_episode_length = 2000
+    W1, W2 = train_policy_gradient_agent(num_episodes, max_episode_length,
+                                         batch_size=2, num_hidden=5, render=False)
+    
+    # Run the agent for 10 episodes
+    policy_gradient_agent(10, W1, W2, max_episode_length)

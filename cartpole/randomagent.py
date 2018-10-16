@@ -25,8 +25,9 @@ def random_agent(num_episodes):
             episode_reward += reward
             # If the episode is over, print the episode reward
             if done:
-                print("Total reward for episode: {}".format(episode_reward))
+                print('Total reward for episode: {}'.format(episode_reward))
                 break
 
-# Play the random agent for 10 episodes
-random_agent(10)
+if __name__ == '__main__':
+    # Play the random agent for 10 episodes
+    random_agent(10)

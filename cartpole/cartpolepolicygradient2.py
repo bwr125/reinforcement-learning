@@ -22,7 +22,7 @@ def policy_gradient_agent(num_episodes, max_episode_length, theta):
             episode_reward += reward
             if done:
                 rewards.append(episode_reward)
-                print("Reward for episode:", episode_reward)
+                print('Reward for episode:', episode_reward)
                 break
 
 # We first try a vanilla policy gradient algorithm. Let tau denote a trajectory,
@@ -77,7 +77,7 @@ def train_policy_gradient_agent(num_episodes, max_episode_length, batch_size,
 
         # Print the total reward for the episode
         if i_episode % 50 == 0:
-            print("Reward", mean_reward, ", episode:", i_episode)
+            print('Reward', mean_reward, ', episode:', i_episode)
 
         if showPlot:
             all_rewards.append(mean_reward)
@@ -161,10 +161,11 @@ def approximate_reward(theta, num_iters, max_episode_length):
         rewards.append(sum(episode_rewards))
     return float(sum(rewards)) / num_iters
 
-theta = train_policy_gradient_agent(1000, 500, 200, 9e-3, 0.5, 1e-7, 400)
+if __name__ == '__main__':
+    theta = train_policy_gradient_agent(1000, 500, 200, 9e-3, 0.5, 1e-7, 400)
 
-# We have now computed our parameter theta, and we run the agent to see how it
-# does with a time limit of 100,000 steps.
-print("Theta after training", theta)
+    # We have now computed our parameter theta, and we run the agent to see how it
+    # does with a time limit of 100,000 steps.
+    print('Theta after training', theta)
 
-policy_gradient_agent(10, int(1e3), theta)
+    policy_gradient_agent(10, int(1e3), theta)

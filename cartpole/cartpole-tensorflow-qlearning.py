@@ -92,8 +92,8 @@ def compute_one_hot_actions(actions):
     return one_hot_actions
 
 # Deep Q-learning
-def deep_q_learn(restore_model="",
-        checkpoint_path="tensorflow_checkpoints"):
+def deep_q_learn(restore_model='',
+        checkpoint_path='tensorflow_checkpoints'):
 
     # Create tensorflow session
     tf_sess = tf.Session()
@@ -102,10 +102,10 @@ def deep_q_learn(restore_model="",
     tf_input_layer, tf_output_layer = create_network()
 
     # A one-hot vector specifying the action
-    tf_action = tf.placeholder("float", [None, NUM_ACTIONS])
+    tf_action = tf.placeholder('float', [None, NUM_ACTIONS])
 
     # The target for Q-learning. This is y_i in eqn 2 of the DQN paper.
-    tf_target = tf.placeholder("float", [None])
+    tf_target = tf.placeholder('float', [None])
 
     # The q-value for the specified action, where tf_action is a one-hot vector.
     tf_q_for_action = tf.reduce_sum(tf_output_layer * tf_action,
@@ -184,7 +184,7 @@ def deep_q_learn(restore_model="",
         # Compute average reward
         if terminal:
             episode_rewards.append(episode_reward)
-            #print("reward for episode", episode_reward)
+            #print('reward for episode', episode_reward)
             episode_reward = 0
             episode_idx += 1
             if len(episode_rewards) > NONZERO_REWARD_MEMORY:
@@ -195,16 +195,16 @@ def deep_q_learn(restore_model="",
         if (t >= OBSERVATION_STEPS) and (t % VERBOSE_EVERY_STEPS == 0):
             avg_q_value = compute_average_q_value(tf_sess, tf_input_layer,
                     tf_output_layer, benchmark_states)
-            print("Time: {}. Average Q-value: {}".format(t, avg_q_value))
+            print('Time: {}. Average Q-value: {}'.format(t, avg_q_value))
             avg_q_history.append(avg_q_value)
 
-            print("Average reward: {}".format(np.mean(episode_rewards)))
+            print('Average reward: {}'.format(np.mean(episode_rewards)))
             avg_reward_history.append(np.mean(episode_rewards))
 
-            print("Epsilon: {}".format(epsilon_greedy))
+            print('Epsilon: {}'.format(epsilon_greedy))
 
             if len(losses) > 0:
-                print("Loss: {}".format(losses[-1]))
+                print('Loss: {}'.format(losses[-1]))
 
             # Plot the data, but don't show it
             plot_data = np.append(np.array(avg_q_history)[:,np.newaxis],
@@ -212,7 +212,7 @@ def deep_q_learn(restore_model="",
 
             # Save the plot
             plt.plot(plot_data)
-            plt.savefig("rewardhistory" + identifier + ".jpg")
+            plt.savefig('rewardhistory' + identifier + '.jpg')
 
             if plot:
                 ax1.clear()
@@ -280,7 +280,7 @@ def compute_average_q_value(tf_sess, tf_input_layer, tf_output_layer, states):
 
 # Initialise the q network
 def create_network():
-    input_layer = tf.placeholder("float", [None, 4])
+    input_layer = tf.placeholder('float', [None, 4])
 
     num_hidden_1 = 5
     W1 = tf.Variable(tf.truncated_normal([4, num_hidden_1], stddev=1/np.sqrt(4)))
@@ -300,5 +300,6 @@ def create_network():
 
     return input_layer, output_layer
 
-# Run deep q learning
-deep_q_learn()
+if __name__ == '__main__':
+    # Run deep q learning
+    deep_q_learn()

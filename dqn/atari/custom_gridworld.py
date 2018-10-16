@@ -74,12 +74,12 @@ class Pong():
 def test_pong(max_steps=100):
     env = Pong(10)
     obs = env.reset()
-    print "First observation"
-    print obs
+    print('First observation')
+    print(obs)
     for t in range(max_steps):
-        print "Enter action: 0 = left, 1 = right"
+        print('Enter action: 0 = left, 1 = right')
         a = int(raw_input())
         obs, reward, done, info = env.step(a)
-        print obs
-        print reward
-        print done
+        print(obs)
+        print(reward)
+        print(done)
