@@ -1,4 +1,6 @@
-from scipy.misc import imresize
+#from scipy.misc import imresize
+from skimage.transform import resize
+from skimage import img_as_float
 import gym
 import numpy as np
 import random
@@ -30,8 +32,10 @@ class CustomGym:
         self.game_name = game_name
 
     def preprocess(self, obs, is_start=False):
-        grayscale = obs.astype('float32').mean(2)
-        s = imresize(grayscale, (self.w, self.h)).astype('float32') * (1.0/255.0)
+#        grayscale = obs.astype('float32').mean(2)
+        grayscale = img_as_float(obs).mean(2)        
+#        s = resize(grayscale, (self.w, self.h)).astype('float32') * (1.0/255.0)        
+        s = resize(grayscale, (self.w, self.h))
         s = s.reshape(1, s.shape[0], s.shape[1], 1)
         if is_start or self.state is None:
             self.state = np.repeat(s, self.num_frames, axis=3)

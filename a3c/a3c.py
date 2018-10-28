@@ -9,7 +9,7 @@ import tensorflow as tf
 import numpy as np
 from time import time, sleep, gmtime, strftime
 import gym
-import Queue
+import queue
 from custom_gym import CustomGym
 from custom_gym_classic_control import CustomGymClassicControl
 import random
@@ -219,7 +219,7 @@ def a3c(game_name, num_threads=8, restore=None, save_path='model'):
         # Create a saver, and only keep 2 checkpoints.
         saver = tf.train.Saver(max_to_keep=2)
 
-        T_queue = Queue.Queue()
+        T_queue = queue.Queue()
 
         # Either restore the parameters or don't.
         if restore is not None:
@@ -293,7 +293,7 @@ def main(argv):
         print('No game name specified, so playing', game_name)
     if save_path is None:
         save_path = 'experiments/' + game_name + '/' + \
-        strftime('%d-%m-%Y-%H:%M:%S/model', gmtime())
+        strftime('%d-%m-%Y-%H.%M.%S/model', gmtime())
         print('No save path specified, so saving to', save_path)
     if not os.path.exists(save_path):
         print('Path doesn\'t exist, so creating')
